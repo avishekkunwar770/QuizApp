@@ -42,17 +42,20 @@ public class LoginPanel extends JPanel {
         card.setBorder(StyleConstants.CARD_BORDER);
 
         JLabel titleLabel = new JLabel("Welcome to Quiz Pro", JLabel.CENTER);
-        titleLabel.setFont(StyleConstants.TITLE_FONT);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 52));
         titleLabel.setForeground(StyleConstants.PRIMARY_COLOR);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel subLabel = new JLabel("Join the elite league of thinkers", JLabel.CENTER);
-        subLabel.setFont(StyleConstants.BODY_FONT);
+        JLabel subLabel = new JLabel("Test your knowledge and compete with the best", JLabel.CENTER);
+        subLabel.setFont(new Font("Segoe UI", Font.PLAIN, 20));
         subLabel.setForeground(StyleConstants.TEXT_SECONDARY);
         subLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton adminButton = new JButton("Admin Portal");
-        StyleConstants.styleSecondaryButton(adminButton);
+        JButton adminButton = new CustomButton("Admin Portal", 
+            Color.WHITE, Color.BLACK, StyleConstants.HOVER_COLOR);
+        adminButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(StyleConstants.BORDER_COLOR, 2),
+                BorderFactory.createEmptyBorder(16, 38, 16, 38)));
         adminButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         adminButton.addActionListener(e -> {
             String adminUsername = JOptionPane.showInputDialog(this, "Enter admin username:");
@@ -65,17 +68,17 @@ public class LoginPanel extends JPanel {
             }
         });
 
-        JButton userButton = new JButton("Get Started");
-        StyleConstants.styleButton(userButton);
+        JButton userButton = new CustomButton("Get Started", 
+            StyleConstants.PRIMARY_COLOR, Color.WHITE, StyleConstants.PRIMARY_DARK);
         userButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         userButton.addActionListener(e -> cardLayout.show(cardPanel, "registerLoginPanel"));
 
         card.add(titleLabel);
-        card.add(Box.createVerticalStrut(10));
-        card.add(subLabel);
-        card.add(Box.createVerticalStrut(40));
-        card.add(userButton);
         card.add(Box.createVerticalStrut(15));
+        card.add(subLabel);
+        card.add(Box.createVerticalStrut(60));
+        card.add(userButton);
+        card.add(Box.createVerticalStrut(20));
         card.add(adminButton);
 
         container.add(card);
@@ -92,12 +95,12 @@ public class LoginPanel extends JPanel {
         card.setBorder(StyleConstants.CARD_BORDER);
 
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(15, 15, 15, 15);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         JLabel titleLabel = new JLabel("Account Access", JLabel.CENTER);
-        titleLabel.setFont(StyleConstants.SUBTITLE_FONT);
-        titleLabel.setForeground(StyleConstants.PRIMARY_COLOR);
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 36));
+        titleLabel.setForeground(StyleConstants.TEXT_PRIMARY);
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 2;
@@ -105,7 +108,8 @@ public class LoginPanel extends JPanel {
 
         gbc.gridwidth = 1;
         JLabel nameLabel = new JLabel("Name");
-        nameLabel.setFont(StyleConstants.BODY_FONT);
+        nameLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        nameLabel.setForeground(StyleConstants.TEXT_PRIMARY);
         gbc.gridx = 0;
         gbc.gridy = 1;
         card.add(nameLabel, gbc);
@@ -117,7 +121,8 @@ public class LoginPanel extends JPanel {
         card.add(nameField, gbc);
 
         JLabel ageLabel = new JLabel("Age");
-        ageLabel.setFont(StyleConstants.BODY_FONT);
+        ageLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        ageLabel.setForeground(StyleConstants.TEXT_PRIMARY);
         gbc.gridx = 0;
         gbc.gridy = 2;
         card.add(ageLabel, gbc);
@@ -128,8 +133,11 @@ public class LoginPanel extends JPanel {
         gbc.gridy = 2;
         card.add(ageField, gbc);
 
-        JButton registerButton = new JButton("Create Account");
-        StyleConstants.styleSecondaryButton(registerButton);
+        JButton registerButton = new CustomButton("Create Account",
+            Color.WHITE, Color.BLACK, StyleConstants.HOVER_COLOR);
+        registerButton.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(StyleConstants.BORDER_COLOR, 2),
+                BorderFactory.createEmptyBorder(16, 38, 16, 38)));
         registerButton.addActionListener(e -> {
             String name = nameField.getText();
             int age;
@@ -151,8 +159,8 @@ public class LoginPanel extends JPanel {
         gbc.gridwidth = 2;
         card.add(registerButton, gbc);
 
-        JButton loginButton = new JButton("Login to Play");
-        StyleConstants.styleButton(loginButton);
+        JButton loginButton = new CustomButton("Login to Play",
+            StyleConstants.PRIMARY_COLOR, Color.WHITE, StyleConstants.PRIMARY_DARK);
         loginButton.addActionListener(e -> {
             String enteredName = nameField.getText();
             User user = findUserByName(enteredName);
@@ -166,9 +174,9 @@ public class LoginPanel extends JPanel {
         gbc.gridy = 4;
         card.add(loginButton, gbc);
 
-        JButton backButton = new JButton("Back");
-        backButton.setFont(StyleConstants.BODY_FONT);
-        backButton.setForeground(StyleConstants.DANGER_COLOR);
+        JButton backButton = new JButton("← Back");
+        backButton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        backButton.setForeground(StyleConstants.PRIMARY_COLOR);
         backButton.setBorderPainted(false);
         backButton.setContentAreaFilled(false);
         backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -190,17 +198,17 @@ public class LoginPanel extends JPanel {
         card.setBorder(StyleConstants.CARD_BORDER);
 
         JLabel rulesTitle = new JLabel("Official Guidelines", JLabel.CENTER);
-        rulesTitle.setFont(StyleConstants.SUBTITLE_FONT);
-        rulesTitle.setForeground(StyleConstants.PRIMARY_COLOR);
+        rulesTitle.setFont(new Font("Segoe UI", Font.BOLD, 32));
+        rulesTitle.setForeground(StyleConstants.TEXT_PRIMARY);
         card.add(rulesTitle, BorderLayout.NORTH);
 
         JTextArea rulesArea = new JTextArea(
-                "• All questions are compulsory - no skipping!\n" +
-                        "• Each question must be answered within 30 seconds.\n" +
-                        "• Points are awarded for each correct answer based on level.\n" +
-                        "• Your progress is saved automatically.\n" +
+                "• All questions are compulsory - no skipping!\n\n" +
+                        "• Each question must be answered within 30 seconds.\n\n" +
+                        "• Points are awarded for each correct answer based on level.\n\n" +
+                        "• Your progress is saved automatically.\n\n" +
                         "• Maintain sportsmanship and enjoy the challenge.");
-        rulesArea.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        rulesArea.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         rulesArea.setForeground(StyleConstants.TEXT_PRIMARY);
         rulesArea.setEditable(false);
         rulesArea.setLineWrap(true);
@@ -213,8 +221,8 @@ public class LoginPanel extends JPanel {
         scroll.getViewport().setOpaque(false);
         card.add(scroll, BorderLayout.CENTER);
 
-        JButton startButton = new JButton("I am Ready!");
-        StyleConstants.styleButton(startButton);
+        JButton startButton = new CustomButton("I am Ready!",
+            StyleConstants.PRIMARY_COLOR, Color.WHITE, StyleConstants.PRIMARY_DARK);
         startButton.addActionListener(e -> {
             startQuiz(null); // Assuming user is cached or handled
         });
@@ -304,11 +312,14 @@ public class LoginPanel extends JPanel {
 
     // Utility function to style text fields
     private void styleTextField(JTextField textField) {
-        textField.setFont(StyleConstants.BODY_FONT);
-        textField.setPreferredSize(new Dimension(250, 40));
+        textField.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        textField.setPreferredSize(new Dimension(350, 55));
+        textField.setForeground(StyleConstants.TEXT_PRIMARY);
+        textField.setBackground(Color.WHITE);
         textField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+                BorderFactory.createLineBorder(StyleConstants.BORDER_COLOR, 1),
+                BorderFactory.createEmptyBorder(12, 20, 12, 20)));
+        textField.setCaretColor(StyleConstants.PRIMARY_COLOR);
     }
 
     // Main method removed as MainFrame is now the entry point

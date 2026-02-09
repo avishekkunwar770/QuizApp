@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         instance = this;
         setTitle("Quiz Pro - Ultimate Edition");
-        setSize(1100, 800);
+        setSize(1400, 900);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(StyleConstants.BACKGROUND_COLOR);
@@ -52,9 +52,9 @@ public class MainFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Set Look and Feel to System default
+        // Disable system Look and Feel to use our custom colors
         try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }

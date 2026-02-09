@@ -32,7 +32,7 @@ public class AdminPanel extends JPanel {
 
         JLabel adminLabel = new JLabel("Console", JLabel.CENTER);
         adminLabel.setFont(StyleConstants.BODY_FONT);
-        adminLabel.setForeground(StyleConstants.ACCENT_COLOR);
+        adminLabel.setForeground(Color.WHITE);
         adminLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         sidebar.add(logoLabel);
@@ -58,15 +58,16 @@ public class AdminPanel extends JPanel {
 
         JLabel welcomeLabel = new JLabel("System Overview");
         welcomeLabel.setFont(StyleConstants.TITLE_FONT);
-        welcomeLabel.setForeground(StyleConstants.PRIMARY_COLOR);
+        welcomeLabel.setForeground(StyleConstants.TEXT_PRIMARY);
         mainContent.add(welcomeLabel, BorderLayout.NORTH);
 
         questionTextArea = new JTextArea();
         questionTextArea.setEditable(false);
         questionTextArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        questionTextArea.setForeground(StyleConstants.TEXT_PRIMARY);
         questionTextArea.setBackground(Color.WHITE);
         questionTextArea.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(230, 230, 230)),
+                BorderFactory.createLineBorder(StyleConstants.BORDER_COLOR, 1),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)));
 
         JScrollPane scrollPane = new JScrollPane(questionTextArea);
@@ -81,52 +82,185 @@ public class AdminPanel extends JPanel {
         JButton btn = new JButton(text);
         btn.setMaximumSize(new Dimension(210, 45));
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        StyleConstants.styleButton(btn);
-        btn.setBackground(StyleConstants.SECONDARY_COLOR);
+        btn.setFont(StyleConstants.BUTTON_FONT);
+        btn.setBackground(Color.WHITE);
+        btn.setForeground(StyleConstants.PRIMARY_COLOR);
+        btn.setFocusPainted(false);
+        btn.setBorder(BorderFactory.createEmptyBorder(12, 20, 12, 20));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btn.addActionListener(listener);
+        
+        btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btn.setBackground(StyleConstants.HOVER_COLOR);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btn.setBackground(Color.WHITE);
+            }
+        });
+        
         parent.add(btn);
         parent.add(Box.createVerticalStrut(15));
     }
 
     private void openAddQuestionDialog() {
-        JDialog addDialog = new JDialog(MainFrame.getInstance(), "Add Question", true);
-        addDialog.setLayout(new GridLayout(7, 2, 10, 10));
-        addDialog.setSize(400, 350);
+        JDialog addDialog = new JDialog(MainFrame.getInstance(), "Add New Question", true);
+        addDialog.setSize(900, 700);
         addDialog.setLocationRelativeTo(MainFrame.getInstance());
-
-        JTextField questionField = new JTextField();
-        JTextField optionAField = new JTextField();
-        JTextField optionBField = new JTextField();
-        JTextField optionCField = new JTextField();
-        JTextField optionDField = new JTextField();
-        JTextField correctAnswerField = new JTextField();
-
-        addDialog.add(new JLabel("Question:"));
-        addDialog.add(questionField);
-        addDialog.add(new JLabel("Option A:"));
-        addDialog.add(optionAField);
-        addDialog.add(new JLabel("Option B:"));
-        addDialog.add(optionBField);
-        addDialog.add(new JLabel("Option C:"));
-        addDialog.add(optionCField);
-        addDialog.add(new JLabel("Option D:"));
-        addDialog.add(optionDField);
-        addDialog.add(new JLabel("Correct Answer (A/B/C/D):"));
-        addDialog.add(correctAnswerField);
-
-        JButton saveButton = new JButton("Save");
+        addDialog.setLayout(new BorderLayout(20, 20));
+        
+        // Header
+        JPanel headerPanel = new JPanel();
+        headerPanel.setBackground(StyleConstants.PRIMARY_COLOR);
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(25, 30, 25, 30));
+        JLabel headerLabel = new JLabel("Add New Question");
+        headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
+        headerLabel.setForeground(Color.WHITE);
+        headerPanel.add(headerLabel);
+        addDialog.add(headerPanel, BorderLayout.NORTH);
+        
+        // Form Panel
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);
+        formPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 30, 40));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(12, 10, 12, 10);
+        
+        // Question field
+        gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 1;
+        JLabel questionLabel = new JLabel("Question:");
+        questionLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        questionLabel.setForeground(Color.BLACK);
+        formPanel.add(questionLabel, gbc);
+        
+        gbc.gridx = 1; gbc.gridwidth = 2;
+        JTextArea questionField = new JTextArea(3, 40);
+        questionField.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        questionField.setLineWrap(true);
+        questionField.setWrapStyleWord(true);
+        questionField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(StyleConstants.BORDER_COLOR, 2),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        JScrollPane questionScroll = new JScrollPane(questionField);
+        formPanel.add(questionScroll, gbc);
+        
+        // Option A
+        gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1;
+        JLabel optionALabel = new JLabel("Option A:");
+        optionALabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        optionALabel.setForeground(Color.BLACK);
+        formPanel.add(optionALabel, gbc);
+        
+        gbc.gridx = 1; gbc.gridwidth = 2;
+        JTextField optionAField = new JTextField(40);
+        StyleConstants.styleTextField(optionAField);
+        formPanel.add(optionAField, gbc);
+        
+        // Option B
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 1;
+        JLabel optionBLabel = new JLabel("Option B:");
+        optionBLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        optionBLabel.setForeground(Color.BLACK);
+        formPanel.add(optionBLabel, gbc);
+        
+        gbc.gridx = 1; gbc.gridwidth = 2;
+        JTextField optionBField = new JTextField(40);
+        StyleConstants.styleTextField(optionBField);
+        formPanel.add(optionBField, gbc);
+        
+        // Option C
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 1;
+        JLabel optionCLabel = new JLabel("Option C:");
+        optionCLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        optionCLabel.setForeground(Color.BLACK);
+        formPanel.add(optionCLabel, gbc);
+        
+        gbc.gridx = 1; gbc.gridwidth = 2;
+        JTextField optionCField = new JTextField(40);
+        StyleConstants.styleTextField(optionCField);
+        formPanel.add(optionCField, gbc);
+        
+        // Option D
+        gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 1;
+        JLabel optionDLabel = new JLabel("Option D:");
+        optionDLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        optionDLabel.setForeground(Color.BLACK);
+        formPanel.add(optionDLabel, gbc);
+        
+        gbc.gridx = 1; gbc.gridwidth = 2;
+        JTextField optionDField = new JTextField(40);
+        StyleConstants.styleTextField(optionDField);
+        formPanel.add(optionDField, gbc);
+        
+        // Correct Answer
+        gbc.gridx = 0; gbc.gridy = 5; gbc.gridwidth = 1;
+        JLabel correctLabel = new JLabel("Correct Answer:");
+        correctLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        correctLabel.setForeground(Color.BLACK);
+        formPanel.add(correctLabel, gbc);
+        
+        gbc.gridx = 1; gbc.gridwidth = 1;
+        JComboBox<String> correctAnswerCombo = new JComboBox<>(new String[]{"A", "B", "C", "D"});
+        correctAnswerCombo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        correctAnswerCombo.setPreferredSize(new Dimension(100, 50));
+        formPanel.add(correctAnswerCombo, gbc);
+        
+        // Level
+        gbc.gridx = 0; gbc.gridy = 6; gbc.gridwidth = 1;
+        JLabel levelLabel = new JLabel("Level:");
+        levelLabel.setFont(new Font("Segoe UI", Font.BOLD, 18));
+        levelLabel.setForeground(Color.BLACK);
+        formPanel.add(levelLabel, gbc);
+        
+        gbc.gridx = 1; gbc.gridwidth = 1;
+        JComboBox<String> levelCombo = new JComboBox<>(new String[]{"Beginner", "Intermediate", "Advanced"});
+        levelCombo.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        levelCombo.setPreferredSize(new Dimension(200, 50));
+        formPanel.add(levelCombo, gbc);
+        
+        addDialog.add(formPanel, BorderLayout.CENTER);
+        
+        // Button Panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 20));
+        buttonPanel.setBackground(Color.WHITE);
+        
+        JButton cancelButton = new CustomButton("Cancel", Color.WHITE, Color.BLACK, StyleConstants.HOVER_COLOR);
+        cancelButton.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(StyleConstants.BORDER_COLOR, 2),
+            BorderFactory.createEmptyBorder(12, 30, 12, 30)));
+        cancelButton.addActionListener(e -> addDialog.dispose());
+        
+        JButton saveButton = new CustomButton("Save Question", StyleConstants.PRIMARY_COLOR, Color.WHITE, StyleConstants.PRIMARY_DARK);
         saveButton.addActionListener(e -> {
-            addQuestionToDatabase(questionField.getText(), optionAField.getText(), optionBField.getText(),
-                    optionCField.getText(), optionDField.getText(), correctAnswerField.getText());
+            String question = questionField.getText().trim();
+            String optionA = optionAField.getText().trim();
+            String optionB = optionBField.getText().trim();
+            String optionC = optionCField.getText().trim();
+            String optionD = optionDField.getText().trim();
+            String correctAnswer = correctAnswerCombo.getSelectedItem().toString().toLowerCase();
+            String level = levelCombo.getSelectedItem().toString();
+            
+            if (question.isEmpty() || optionA.isEmpty() || optionB.isEmpty() || 
+                optionC.isEmpty() || optionD.isEmpty()) {
+                JOptionPane.showMessageDialog(addDialog, "Please fill all fields!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            
+            addQuestionToDatabase(question, optionA, optionB, optionC, optionD, correctAnswer, level);
             addDialog.dispose();
         });
-        addDialog.add(saveButton);
+        
+        buttonPanel.add(cancelButton);
+        buttonPanel.add(saveButton);
+        addDialog.add(buttonPanel, BorderLayout.SOUTH);
+        
         addDialog.setVisible(true);
     }
 
     private void addQuestionToDatabase(String question, String optionA, String optionB, String optionC, String optionD,
-            String correctAnswer) {
-        String query = "INSERT INTO questions (question, option_a, option_b, option_c, option_d, correct_answer) VALUES (?, ?, ?, ?, ?, ?)";
+            String correctAnswer, String level) {
+        String query = "INSERT INTO questions (question, option_a, option_b, option_c, option_d, correct_answer, level) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DBConnection.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -136,10 +270,11 @@ public class AdminPanel extends JPanel {
             preparedStatement.setString(4, optionC);
             preparedStatement.setString(5, optionD);
             preparedStatement.setString(6, correctAnswer);
+            preparedStatement.setString(7, level);
             preparedStatement.executeUpdate();
-            JOptionPane.showMessageDialog(this, "Question added successfully!");
+            JOptionPane.showMessageDialog(this, "Question added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error adding question: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error adding question: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -203,48 +338,90 @@ public class AdminPanel extends JPanel {
     }
 
     private void viewReports() {
-        // Fetch user data from the database, including the highest score and games
-        // played
-        String query = "SELECT id, name, MAX(score) AS highest_score, COUNT(*) AS games_played " +
-                "FROM users " +
-                "GROUP BY id, name";
+        // Fetch user data from the database
+        String query = "SELECT id, name, age, score, level FROM users ORDER BY score DESC";
         try (Connection connection = DBConnection.getConnection();
                 Statement statement = connection.createStatement();
                 ResultSet resultSet = statement.executeQuery(query)) {
 
             // Create a table model to hold the data
-            DefaultTableModel tableModel = new DefaultTableModel();
+            DefaultTableModel tableModel = new DefaultTableModel() {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
             tableModel.addColumn("ID");
             tableModel.addColumn("Name");
-            tableModel.addColumn("Highest Score");
-            tableModel.addColumn("Games Played");
+            tableModel.addColumn("Age");
+            tableModel.addColumn("Score");
+            tableModel.addColumn("Level");
 
             // Add rows to the table model
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
-                int highestScore = resultSet.getInt("highest_score");
-                int gamesPlayed = resultSet.getInt("games_played");
-                tableModel.addRow(new Object[] { id, name, highestScore, gamesPlayed });
+                int age = resultSet.getInt("age");
+                int score = resultSet.getInt("score");
+                String level = resultSet.getString("level");
+                tableModel.addRow(new Object[] { id, name, age, score, level != null ? level : "N/A" });
             }
 
             // Create a JTable with the table model
             JTable userTable = new JTable(tableModel);
+            userTable.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+            userTable.setRowHeight(40);
             userTable.setFillsViewportHeight(true);
+            userTable.setSelectionBackground(StyleConstants.HOVER_COLOR);
+            userTable.setSelectionForeground(Color.BLACK);
+            userTable.setGridColor(StyleConstants.BORDER_COLOR);
+            
+            // Style table header
+            userTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 18));
+            userTable.getTableHeader().setBackground(StyleConstants.PRIMARY_COLOR);
+            userTable.getTableHeader().setForeground(Color.WHITE);
+            userTable.getTableHeader().setPreferredSize(new Dimension(0, 50));
+            userTable.getTableHeader().setBorder(BorderFactory.createEmptyBorder());
 
             // Add the table to a scroll pane
             JScrollPane scrollPane = new JScrollPane(userTable);
+            scrollPane.setBorder(BorderFactory.createLineBorder(StyleConstants.BORDER_COLOR, 1));
 
             // Create a dialog to display the table
-            JDialog reportDialog = new JDialog(this, "User Reports", true);
-            reportDialog.setLayout(new BorderLayout());
-            reportDialog.add(scrollPane, BorderLayout.CENTER);
-            reportDialog.setSize(600, 400);
+            JDialog reportDialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "User Analytics", true);
+            reportDialog.setLayout(new BorderLayout(0, 0));
+            reportDialog.setSize(1000, 600);
             reportDialog.setLocationRelativeTo(this);
+            
+            // Header
+            JPanel headerPanel = new JPanel();
+            headerPanel.setBackground(StyleConstants.PRIMARY_COLOR);
+            headerPanel.setBorder(BorderFactory.createEmptyBorder(25, 30, 25, 30));
+            JLabel headerLabel = new JLabel("User Analytics & Performance");
+            headerLabel.setFont(new Font("Segoe UI", Font.BOLD, 32));
+            headerLabel.setForeground(Color.WHITE);
+            headerPanel.add(headerLabel);
+            reportDialog.add(headerPanel, BorderLayout.NORTH);
+            
+            // Table panel
+            JPanel tablePanel = new JPanel(new BorderLayout());
+            tablePanel.setBackground(Color.WHITE);
+            tablePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+            tablePanel.add(scrollPane, BorderLayout.CENTER);
+            reportDialog.add(tablePanel, BorderLayout.CENTER);
+            
+            // Button panel
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 20));
+            buttonPanel.setBackground(Color.WHITE);
+            JButton closeButton = new CustomButton("Close", StyleConstants.PRIMARY_COLOR, Color.WHITE, StyleConstants.PRIMARY_DARK);
+            closeButton.addActionListener(e -> reportDialog.dispose());
+            buttonPanel.add(closeButton);
+            reportDialog.add(buttonPanel, BorderLayout.SOUTH);
+            
             reportDialog.setVisible(true);
 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error fetching user reports: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error fetching user reports: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
